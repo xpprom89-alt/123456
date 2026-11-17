@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Childhood Playground: слова и времена (A2–B1)</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky1:#7FD3FF; --sky2:#C9EEFF; --grass:#6CC24A; --grass2:#5AAF3A;
+    --text:#2A3A4A; --muted:#6A7B8C; --blue:#2B7BB9; --sun:#FFD43B;
+    --pink:#FF6B9A; --pinkD:#C93E6C; --bl:#4DABF7; --blD:#1C7ED6;
+    --pur:#9775FA; --purD:#6741D9; --or:#FFA94D; --orD:#E8590C;
+    --good:#2FB344; --goodD:#2B8A3E; --bad:#E03131;
+    --card:#fff; --soft:#F3ECFF;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:Nunito,"Trebuchet MS",sans-serif;color:var(--text);min-height:100vh;background:var(--sky2)}
+
+  /* ---------- фон: небо, солнце, облака, трава, площадка ---------- */
+  .sky{position:fixed;inset:0;z-index:-3;background:linear-gradient(var(--sky1) 0%,var(--sky2) 70%)}
+  .sun{position:fixed;right:6vw;top:34px;width:90px;height:90px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 16px rgba(255,212,59,.35),0 0 0 34px rgba(255,212,59,.15);z-index:-2}
+  .cloud{position:fixed;background:#fff;border-radius:40px;height:34px;z-index:-2;animation:drift 60s linear infinite alternate}
+  .cloud::before,.cloud::after{content:"";position:absolute;background:#fff;border-radius:50%}
+  .cl1{left:5vw;top:70px;width:120px}.cl1::before{width:56px;height:56px;left:16px;top:-26px}.cl1::after{width:44px;height:44px;left:58px;top:-18px}
+  .cl2{left:58vw;top:150px;width:90px;animation-duration:80s}.cl2::before{width:44px;height:44px;left:12px;top:-20px}.cl2::after{width:34px;height:34px;left:44px;top:-14px}
+  .cl3{left:30vw;top:40px;width:70px;animation-duration:70s;opacity:.85}.cl3::before{width:36px;height:36px;left:10px;top:-16px}.cl3::after{width:26px;height:26px;left:34px;top:-10px}
+  @keyframes drift{from{transform:translateX(0)}to{transform:translateX(80px)}}
+  .ground{position:fixed;left:0;right:0;bottom:0;height:190px;z-index:-1;pointer-events:none}
+  .hill2{position:absolute;bottom:0;left:-10%;width:65%;height:140px;background:var(--grass2);border-radius:50% 50% 0 0}
+  .hill1{position:absolute;bottom:0;left:0;right:0;height:120px;background:var(--grass);border-radius:60% 60% 0 0/50px 50px 0 0}
+  .ground svg{position:absolute;bottom:70px;left:3vw;width:240px;height:170px}
+  .ground .sand{position:absolute;bottom:22px;right:6vw;font-size:46px}
+
+  .page{max-width:820px;margin:0 auto;padding:26px 16px 220px}
+  header h1{font-family:Fredoka,sans-serif;font-weight:700;font-size:46px;margin:0;color:#fff;text-shadow:3px 3px 0 var(--blue);line-height:1.05}
+  .sub{color:#164A73;font-weight:700;margin:8px 0 14px;max-width:60ch}
+  .hud{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+  .pill{background:#fff;border-radius:30px;padding:6px 16px;font-weight:800;color:var(--blue);box-shadow:0 4px 0 var(--blue);white-space:nowrap}
+  .tog{display:flex;gap:6px;align-items:center;cursor:pointer}
+  .bar{flex:1;min-width:140px;height:16px;border-radius:10px;background:var(--soft);overflow:hidden;box-shadow:inset 0 0 0 2px #fff}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FF9EC4,#B39DFF,#74C0FC);border-radius:10px;transition:width .5s}
+
+  button{font-family:Nunito,sans-serif;font-weight:800;font-size:15px;cursor:pointer;border:none;border-radius:16px;padding:10px 16px;background:#fff;color:var(--blue);box-shadow:0 4px 0 var(--blue);transition:transform .1s,box-shadow .1s}
+  button:hover{transform:translateY(-1px)}
+  button:active{transform:translateY(3px);box-shadow:0 1px 0 var(--blue)}
+  button:disabled{cursor:default;transform:none}
+  button:focus-visible,input:focus-visible,summary:focus-visible,.stage:focus-visible{outline:4px solid var(--orD);outline-offset:3px}
+  .big-btn{font-family:Fredoka,sans-serif;font-size:20px;padding:13px 26px;background:var(--pink);color:#fff;box-shadow:0 6px 0 var(--pinkD)}
+  .big-btn:active{box-shadow:0 2px 0 var(--pinkD)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
+
+  .card{background:var(--card);border-radius:28px;padding:22px 24px;border:4px solid #FFB84D;box-shadow:0 10px 0 #E9A23B;margin-bottom:22px}
+  .card h2{font-family:Fredoka,sans-serif;font-size:30px;margin:0 0 6px;color:var(--blue)}
+  .card h3{font-family:Fredoka,sans-serif;font-size:21px;margin:16px 0 6px;color:var(--purD)}
+
+  /* ---------- карта ---------- */
+  .intro{font-weight:700;line-height:1.55;margin:0}
+  .map{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;margin-bottom:22px}
+  .st{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;padding:16px 18px 18px;border-radius:26px;background:#fff;color:var(--text);box-shadow:0 8px 0 var(--c,var(--bl));border:3px solid var(--c,var(--bl))}
+  .st:active{box-shadow:0 3px 0 var(--c)}
+  .st .em{font-size:40px;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--soft);margin-bottom:4px}
+  .st .no{font-size:13px;color:var(--muted)}
+  .st .nm{font-family:Fredoka,sans-serif;font-size:22px;color:var(--text);line-height:1.1}
+  .st .ds{font-size:14px;color:var(--muted);font-weight:700}
+  .st .bar{width:100%;flex:none;height:12px;margin-top:8px}
+  .st .res{font-size:14px;font-weight:800;color:var(--muted)}
+
+  /* ---------- теория ---------- */
+  .theory p,.theory li{line-height:1.6}
+  .theory ul{margin:4px 0;padding-left:22px}
+  .markers{display:flex;flex-wrap:wrap;gap:8px}
+  .markers span{background:#FFF1C1;color:#B35C00;border-radius:20px;padding:4px 12px;font-weight:800}
+  .ex{background:#EAF6FF;border-radius:16px;padding:10px 14px;margin:6px 0;font-weight:700}
+  .ex .sp{box-shadow:none;background:none;padding:0 4px;font-size:16px}
+  .tip{background:#FFE3EE;border-radius:16px;padding:10px 14px;margin-top:14px;font-weight:700}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .chips button{box-shadow:0 4px 0 var(--purD);color:var(--purD)}
+  .phr{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center}
+  .phr .e{font-size:30px}
+  .phr b{font-size:18px}
+
+  /* ---------- задание ---------- */
+  .ttop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+  .ttl{font-family:Fredoka,sans-serif;font-size:22px;color:var(--blue)}
+  .cnt{font-weight:800;color:var(--muted)}
+  details.rule{margin:12px 0 4px;background:#F7F9FC;border-radius:16px;padding:6px 14px}
+  details.rule summary{cursor:pointer;font-weight:800;color:var(--purD)}
+  .stage{min-height:170px;margin-top:16px}
+  .stage:focus{outline:none}
+  .emo{font-size:76px;text-align:center;line-height:1.1}
+  .def{text-align:center;font-size:23px;font-weight:800;margin:10px 0 4px}
+  .ask{text-align:center;color:var(--muted);font-weight:700;margin:0 0 14px}
+  .sentence{font-size:23px;line-height:1.7;margin:4px 0 16px}
+  .gap{display:inline-block;min-width:110px;border-bottom:4px dashed var(--pink);text-align:center;padding:0 4px}
+  .gap.filled{border-bottom-style:solid;border-color:var(--good);color:var(--goodD);font-weight:800}
+  .chat{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+  .msg{align-self:flex-start;max-width:88%;background:#EAF6FF;border-radius:22px 22px 22px 6px;padding:12px 16px;font-size:20px;font-weight:700}
+  .msg.me{align-self:flex-end;background:#FFE3EE;border-radius:22px 22px 6px 22px;min-width:120px;text-align:center}
+  .opts{display:grid;gap:12px}
+  .ob{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font-size:19px;padding:13px 16px;color:#fff;border-radius:20px}
+  .ob kbd{font:800 13px Nunito,sans-serif;background:rgba(255,255,255,.3);border-radius:8px;padding:2px 7px}
+  .c0{background:var(--pink);box-shadow:0 6px 0 var(--pinkD)}.c1{background:var(--bl);box-shadow:0 6px 0 var(--blD)}
+  .c2{background:var(--pur);box-shadow:0 6px 0 var(--purD)}.c3{background:var(--or);box-shadow:0 6px 0 var(--orD)}
+  .ob:disabled{opacity:.4}
+  .ob.right{opacity:1;background:var(--good);box-shadow:0 6px 0 var(--goodD)}
+  .ob.wrong{opacity:1;background:#ADB5BD;box-shadow:0 6px 0 #868E96;text-decoration:line-through}
+
+  .line{min-height:64px;border-bottom:4px dashed var(--pink);padding:8px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+  .line:empty::after{content:"Tap the words below";color:var(--muted);font-weight:700}
+  .pool{display:flex;flex-wrap:wrap;gap:10px;padding:18px 0 4px;min-height:60px}
+  .tile{font-size:18px;padding:9px 14px;color:var(--purD);box-shadow:0 4px 0 var(--purD)}
+  .line .tile{background:#FFF1C1;color:#8A4B00;box-shadow:0 4px 0 #E9A23B}
+  .line.right .tile{background:#D3F9D8;color:var(--goodD);box-shadow:0 4px 0 var(--good)}
+  .line.wrong .tile{background:#FFE3E3;color:var(--bad);box-shadow:0 4px 0 var(--bad)}
+
+  .tin{font:800 21px Nunito,sans-serif;border:none;border-bottom:4px solid var(--pink);background:#FFF5F8;border-radius:10px 10px 0 0;padding:3px 8px;color:var(--text);max-width:100%}
+  .tin.right{border-color:var(--good);background:#EBFBEE}.tin.wrong{border-color:var(--bad);background:#FFF5F5}
+  .hint{color:var(--muted);font-size:18px;font-weight:700}
+
+  .fb{min-height:30px;margin-top:18px;font-size:17px;font-weight:700;line-height:1.55}
+  .fb .ok{color:var(--good);font-weight:800}.fb .bad{color:var(--bad);font-weight:800}
+  .fb small{display:block;color:var(--muted);font-size:15px;margin-top:2px}
+  .next{font-family:Fredoka,sans-serif;font-size:19px;padding:11px 26px;background:var(--good);color:#fff;box-shadow:0 6px 0 var(--goodD)}
+  .pop{animation:pop .45s}.wob{animation:wob .45s}
+  @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:scale(1)}}
+  @keyframes wob{0%,100%{transform:none}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+
+  .sum{text-align:center}
+  .sum .stars{font-size:54px;letter-spacing:6px}
+  .sum .big{font-family:Fredoka,sans-serif;font-size:46px;color:var(--blue)}
+  .sum ul{text-align:left;color:var(--bad);font-weight:700;display:inline-block;margin:6px 0}
+
+  .result,.teacher{display:none}
+  .result.show,.teacher.show{display:block}
+  .result input,.teacher input{font:700 16px Nunito,sans-serif;padding:9px 12px;border:3px solid var(--bl);border-radius:14px;margin:6px 8px 6px 0}
+  .result input{width:100%;max-width:330px}
+  .report{white-space:pre-line;background:#F3F6F9;border-radius:16px;padding:12px 14px;margin:10px 0;font-weight:700}
+  .ok{color:var(--good);font-weight:800}.bad{color:var(--bad);font-weight:800}
+
+  @media (max-width:600px){
+    header h1{font-size:34px}
+    .card{padding:18px 16px}
+    .sentence,.def{font-size:20px}.msg{font-size:18px}.emo{font-size:62px}
+    .ground svg{width:170px;height:120px;bottom:60px}
+    .sun{width:64px;height:64px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<div class="sun" aria-hidden="true"></div>
+<div class="cloud cl1" aria-hidden="true"></div><div class="cloud cl2" aria-hidden="true"></div><div class="cloud cl3" aria-hidden="true"></div>
+<div class="ground" aria-hidden="true">
+  <div class="hill2"></div><div class="hill1"></div>
+  <svg viewBox="0 0 240 170"><path d="M20 168 L20 44 L62 44 L62 168" stroke="#E8590C" stroke-width="8" fill="none"/><path d="M20 80 h42 M20 116 h42" stroke="#E8590C" stroke-width="5"/><path d="M62 44 Q124 64 156 166" stroke="#FCC419" stroke-width="18" fill="none" stroke-linecap="round"/><path d="M176 168 L198 30 L220 168" stroke="#845EF7" stroke-width="7" fill="none" stroke-linejoin="round"/><path d="M198 30 L192 112 M198 30 L204 112" stroke="#495057" stroke-width="2.5"/><rect x="184" y="110" width="28" height="7" rx="3" fill="#FF6B9A"/></svg>
+  <div class="sand">🪣⛱️</div>
+</div>
+
+<div class="page">
+  <header>
+    <h1>🛝 Childhood Playground</h1>
+    <p class="sub">Слова о детстве и характере, потом Present Simple, Present Continuous, Past Simple и Present Perfect. Уровень A2–B1.</p>
+    <div class="hud">
+      <span class="pill" id="stars">⭐ 0</span>
+      <div class="bar" title="Общий прогресс"><i id="bar"></i></div>
+      <label class="pill tog"><input type="checkbox" id="sound" checked> 🔊 Звук</label>
+    </div>
+  </header>
+
+  <main id="view"></main>
+
+  <section class="card result" id="result">
+    <h2 id="resTitle">Результат</h2>
+    <div>Впишите своё имя, скопируйте результат и отправьте его учителю в ответе к заданию.</div>
+    <input id="studentName" placeholder="Имя и фамилия" autocomplete="name">
+    <div class="report" id="report"></div>
+    <div class="row"><button id="copyBtn">📋 Скопировать результат</button><span id="copied"></span></div>
+  </section>
+
+  <section class="card teacher" id="teacher">
+    <h2>Проверка кода</h2>
+    <div>Введите данные из результата ученика.</div>
+    <div class="row">
+      <input id="tName" placeholder="Имя">
+      <input id="tCorrect" placeholder="Верно" size="7">
+      <input id="tDone" placeholder="Станций" size="7">
+      <input id="tCode" placeholder="Код" size="8">
+      <button id="tCheck">Проверить</button>
+    </div>
+    <div id="tResult" aria-live="polite"></div>
+  </section>
+</div>
+
+<script>
+/* =====================================================================
+   СОДЕРЖАНИЕ ИГРЫ. Меняйте тексты здесь, количество заданий считается само.
+
+   WORDS   — ["слово", "определение", "эмодзи"]
+             В первой станции ученик видит только определение и эмодзи
+             и выбирает слово. Эти задания создаются автоматически.
+   PHRASES — ["фраза", "перевод", "когда говорим", "эмодзи"]
+
+   Форматы заданий в STATIONS:
+   ["gap",    "Предложение с ___", "ответ", ["неверный","неверный","неверный"]]
+   ["react",  "Реплика собеседника", "верная реакция", ["неверная","неверная"]]
+   ["choose", "Предложение с ___", ["верный","неверный","неверный"], "пояснение"]
+   ["type",   "She {takes} (take) care of …"]   ответ в {}, варианты через |
+   ["build",  "Слова / через / косую черту."]
+   Верный ответ всегда пишется первым, игра сама перемешает варианты.
+   ===================================================================== */
+const WORDS = [
+  ["take care of","to do the necessary things for someone who needs help or protection","🍼🫶"],
+  ["hurt oneself","to feel pain in a part of your body","🤕"],
+  ["sensible","clever and practical","🧠👍"],
+  ["immature","behaving like a child","🍭😜"],
+  ["insecure","not confident","🫣"],
+  ["anxious","nervous and worried","😰"],
+  ["responsible","keeping promises","🤝✅"],
+  ["play outside","to play in the street","⚽🌳"],
+  ["play inside","to play in the house","🧩🏠"]
+];
+const PHRASES = [
+  ["That's great!","Здорово! Класс!","радуемся хорошей новости","🤩"],
+  ["How sweet!","Как мило!","что-то милое и трогательное","🥰"],
+  ["You're kidding.","Да ты шутишь!","удивляемся и не верим, что это правда","😲"],
+  ["Never mind.","Ничего страшного.","кто-то извиняется или что-то пошло не так, но это не важно","🤷"],
+  ["I don't believe it.","Не может быть!","очень сильное удивление или шок","😱"],
+  ["What a pity.","Как жаль.","сочувствуем плохой новости","😢"]
+];
+
+const STATIONS = [
+  {
+    id:"words", emoji:"🪣", place:"Sandbox", color:"#FFA94D",
+    title:"Words", desc:"Найди слово по определению",
+    autoWords:true,
+    theory:{
+      intro:"Прочитайте и послушайте слова: нажмите на любое. В заданиях вы увидите только определение и эмодзи, а слово нужно найти самому. Во второй части слова нужно вставить в предложения.",
+      words:true,
+      tip:"hurt oneself меняется по лицам: I hurt myself, you hurt yourself, he hurt himself, she hurt herself, we hurt ourselves, they hurt themselves.\ntake care of + кто-то: take care of a baby, take care of my dog."
+    },
+    items:[
+      ["gap","I'm the oldest, so I often ___ my little brother.","take care of",["play inside","hurt myself","feel anxious"]],
+      ["gap","Be careful on the climbing frame! Don't ___!","hurt yourself",["take care of","play inside","feel sensible"]],
+      ["gap","Kate is very ___. She always keeps her promises.","responsible",["immature","anxious","insecure"]],
+      ["gap","He is twelve, but he cries when he loses a game. He is so ___!","immature",["sensible","responsible","anxious"]],
+      ["gap","Taking an umbrella on a cloudy day is a ___ idea.","sensible",["immature","insecure","anxious"]],
+      ["gap","Before the test, Ben felt ___ and couldn't sleep.","anxious",["sensible","responsible","immature"]],
+      ["gap","She feels ___ about her new glasses, so she doesn't want to go to school.","insecure",["responsible","sensible","immature"]],
+      ["gap","It's sunny! Let's ___ and ride our bikes.","play outside",["play inside","take care of","hurt ourselves"]],
+      ["gap","When it rains, the kids ___ with their toys.","play inside",["play outside","take care of","hurt themselves"]]
+    ]
+  },
+  {
+    id:"phrases", emoji:"💬", place:"Swings", color:"#FF6B9A",
+    title:"What do you say?", desc:"Фразы-реакции в диалогах",
+    theory:{
+      intro:"Эти фразы помогают живо реагировать на то, что говорит собеседник. Прочитайте, когда их используют, и послушайте.",
+      phrases:true,
+      tip:"You're kidding. — «Шутишь? Правда?» (немного не верим). I don't believe it. — «Не может быть!» (сильный шок)."
+    },
+    items:[
+      ["react","I've won first prize in the drawing competition!","That's great!",["What a pity.","Never mind.","How sweet!"]],
+      ["react","Look! The puppy is sleeping on my teddy bear.","How sweet!",["What a pity.","Never mind.","I don't believe it."]],
+      ["react","I'm so sorry, I've broken your pencil.","Never mind.",["How sweet!","That's great!","You're kidding."]],
+      ["react","It's raining, so we can't play outside today.","What a pity.",["How sweet!","That's great!","You're kidding."]],
+      ["react","Guess what! Our teacher was a famous singer when she was young!","You're kidding.",["What a pity.","Never mind.","How sweet!"]],
+      ["react","The dog has eaten the whole birthday cake!","I don't believe it.",["How sweet!","That's great!","Never mind."]],
+      ["react","My grandma has just made a little scarf for my doll.","How sweet!",["Never mind.","What a pity.","You're kidding."]],
+      ["react","I can't come to your party. I'm ill.","What a pity.",["That's great!","How sweet!","You're kidding."]],
+      ["react","Our school has got a new playground with a giant slide!","That's great!",["What a pity.","Never mind.","How sweet!"]],
+      ["react","Oops! I've spilled a little water on the floor.","Never mind.",["That's great!","How sweet!","I don't believe it."]]
+    ]
+  },
+  {
+    id:"ps", emoji:"⚽", place:"Football pitch", color:"#4DABF7",
+    title:"Present Simple", desc:"Привычки, факты, характер",
+    theory:{
+      use:["Привычки и то, что происходит регулярно: I play outside every day.","Факты и характер человека: She is sensible. He takes care of his pets."],
+      form:["+ I / you / we / they play — he / she / it plays (+s, +es)","− I don't play — he doesn't play","? Do you play…? — Does she play…?","be: I am, he is, they are (not) responsible"],
+      markers:["always","usually","often","sometimes","never","every day","on Mondays","at the weekend"],
+      examples:["A responsible child takes care of his pets.","My brother doesn't play inside on sunny days.","Does she feel anxious before tests?"],
+      tip:"После doesn't и does окончание -s уходит: She doesn't play (не doesn't plays)."
+    },
+    items:[
+      ["choose","Kate ___ care of her baby sister every evening.",["takes","take","is taking"],"every evening = привычка, she → takes."],
+      ["choose","My brother is immature. He never ___ his promises.",["keeps","keep","is keeping"],"never = привычка, he → keeps."],
+      ["choose","___ you usually play outside after school?",["Do","Does","Are"],"you → Do you…?"],
+      ["choose","A sensible child never ___ near the road.",["plays","play","is playing"],"a child = he/she → plays."],
+      ["choose","Tom often ___ anxious before tests.",["feels","feel","is feeling"],"often = привычка, Tom → feels."],
+      ["type","My dad always {says} (say) \"Never mind!\" when I make a mistake."],
+      ["type","We {don't play|do not play} (not / play) inside on sunny days."],
+      ["type","{Does she take} (she / take) care of the class hamster?"],
+      ["build","Responsible children / always / keep / their promises."],
+      ["build","My sister / doesn't / feel / insecure / at school."]
+    ]
+  },
+  {
+    id:"pc", emoji:"🛝", place:"Slide", color:"#9775FA",
+    title:"Present Continuous", desc:"Прямо сейчас",
+    theory:{
+      use:["Действие происходит прямо сейчас: Look! The kids are playing outside.","Временная ситуация: I'm taking care of my neighbour's dog this week."],
+      form:["+ I am playing — he / she is playing — we / they are playing","− I'm not playing — he isn't playing — they aren't playing","? Are you playing…? — Is he playing…?"],
+      markers:["now","right now","at the moment","today","this week","Look!","Listen!","Shh!"],
+      examples:["Shh! The baby is sleeping.","I'm feeling a bit anxious right now.","Why are you behaving like a baby? You're so immature!"],
+      tip:"Глаголы состояния обычно не ставим в -ing: know, like, love, want, believe. I don't believe it! (не I'm not believing it)."
+    },
+    items:[
+      ["choose","Look! The kids ___ outside in the rain.",["are playing","play","played"],"Look! = прямо сейчас."],
+      ["choose","Shh! The baby ___ right now.",["is sleeping","sleeps","has slept"],"right now → is sleeping."],
+      ["choose","I ___ care of my neighbour's dog this week.",["am taking","take","took"],"this week = временная ситуация."],
+      ["choose","Listen! Somebody ___ for help.",["is calling","calls","called"],"Listen! = прямо сейчас."],
+      ["choose","She ___ inside today because she has a cold.",["is playing","plays","has played"],"today = только сегодня, временно."],
+      ["type","Mum, Max {is behaving|'s behaving} (behave) like a baby again! He's so immature."],
+      ["type","We {aren't playing|are not playing} (not / play) outside at the moment."],
+      ["type","{Are you feeling} (you / feel) better now?"],
+      ["build","Look! / Ben / is helping / his little sister."],
+      ["build","Right now / I / am feeling / a bit anxious."]
+    ]
+  },
+  {
+    id:"past", emoji:"🎠", place:"Carousel", color:"#20C997",
+    title:"Past Simple", desc:"Законченное прошлое",
+    theory:{
+      use:["Законченное действие в прошлом, время известно: Yesterday I hurt myself.","Рассказ о детстве: When I was little, I played outside every day."],
+      form:["+ правильные глаголы: play → played, behave → behaved","+ неправильные: hurt → hurt, take → took, feel → felt, be → was / were, break → broke","− didn't + 1-я форма: I didn't play","? Did + подлежащее + 1-я форма: Did you play…?"],
+      markers:["yesterday","last week","last year","two days ago","in 2015","when I was a child"],
+      examples:["Grandpa took care of us when Mum was ill.","I didn't feel insecure at my old school.","When did you hurt yourself?"],
+      tip:"После did глагол возвращается в 1-ю форму: Did you feel…? (не Did you felt…?)."
+    },
+    items:[
+      ["choose","Yesterday Ann ___ herself on the swings.",["hurt","hurted","has hurt"],"hurt — неправильный: hurt – hurt – hurt."],
+      ["choose","When I was a child, I ___ outside every day.",["played","have played","am playing"],"When I was a child → Past Simple."],
+      ["choose","___ you take care of your grandma last weekend?",["Did","Do","Have"],"last weekend → Did you…?"],
+      ["choose","Last year I ___ very insecure at my new school.",["felt","feeled","have felt"],"feel – felt – felt."],
+      ["choose","We ___ inside yesterday because it was cold.",["played","play","have played"],"yesterday → Past Simple."],
+      ["type","My brother {broke} (break) his promise last Monday."],
+      ["type","I {didn't feel|did not feel} (not / feel) anxious before the concert."],
+      ["type","Two years ago he {was} (be) really immature."],
+      ["type","Grandpa {took} (take) care of us when Mum was ill."],
+      ["build","When / did / you / hurt / yourself?"]
+    ]
+  },
+  {
+    id:"pp", emoji:"🪁", place:"Kite hill", color:"#FCC419",
+    title:"Present Perfect", desc:"Опыт и результат сейчас",
+    theory:{
+      use:["Опыт в жизни, когда именно — неважно: Have you ever played outside in the snow?","Результат виден сейчас: Oh no! He has hurt himself. (он плачет сейчас)","Началось в прошлом и продолжается: She has taken care of him since 2020."],
+      form:["+ I / you / we / they have played — he / she / it has played","− haven't / hasn't + 3-я форма","? Have you…? — Has she…?","3-я форма: played, hurt, taken, felt, been, become, broken"],
+      markers:["ever","never","just","already","yet","for","since","so far"],
+      examples:["I have never felt so anxious!","He has been very responsible since he got a puppy.","Have you finished your homework yet?"],
+      tip:"Если есть точное время в прошлом (yesterday, ago, last…), нужен Past Simple, а не Present Perfect."
+    },
+    items:[
+      ["choose","Oh no! Sam ___ himself. He's crying.",["has hurt","have hurt","is hurting"],"Результат сейчас, he → has hurt."],
+      ["choose","I ___ so anxious before!",["have never felt","never feel","am never feeling"],"never … before = опыт → Present Perfect."],
+      ["choose","___ you ever played outside in the snow?",["Have","Did","Are"],"ever + played → Have you ever…?"],
+      ["choose","She ___ care of her little brother since 2020.",["has taken","took","takes"],"since 2020 → Present Perfect."],
+      ["choose","We ___ inside for three hours. Let's go out!",["have played","played","are playing"],"for three hours до сих пор → Present Perfect."],
+      ["type","Tom {has become|'s become} (become) more sensible since last year."],
+      ["type","I {haven't finished|have not finished} (not / finish) my homework yet."],
+      ["type","{Have you ever been} (you / ever / be) insecure about your looks?"],
+      ["type","My sister {has just broken|'s just broken} (just / break) her promise again!"],
+      ["build","He / has been / very responsible / since / he got a puppy."]
+    ]
+  },
+  {
+    id:"mix", emoji:"🌳", place:"Treehouse", color:"#E8590C",
+    title:"Final mix", desc:"Все времена и фразы вместе",
+    theory:{
+      use:["Здесь собраны все четыре времени и фразы-реакции."],
+      form:["Present Simple: every day, always → I play / she plays","Present Continuous: now, Look! → I am playing","Past Simple: yesterday, ago → I played","Present Perfect: ever, just, since → I have played"],
+      tip:"Сначала найдите маркер времени, потом выбирайте форму."
+    },
+    items:[
+      ["choose","Look! The baby ___ to walk.",["is trying","tries","has tried"],"Look! → Present Continuous."],
+      ["choose","When I was five, I ___ myself on a slide.",["hurt","have hurt","am hurting"],"When I was five → Past Simple."],
+      ["choose","My mum is a nurse. She ___ care of sick people.",["takes","is taking","took"],"Работа, постоянно → Present Simple."],
+      ["choose","I ___ my best friend for six years.",["have known","know","am knowing"],"for six years до сих пор → Present Perfect."],
+      ["choose","Yesterday we ___ inside because it rained.",["played","have played","play"],"Yesterday → Past Simple."],
+      ["react","I've hurt my knee and I can't play football.","What a pity.",["That's great!","How sweet!","You're kidding."]],
+      ["react","Our cat had five kittens last night!","How sweet!",["Never mind.","What a pity."]],
+      ["react","Sorry, I've left your book at home.","Never mind.",["That's great!","How sweet!","I don't believe it."]],
+      ["type","{Did you play} (you / play) outside yesterday?"],
+      ["type","She {is feeling|'s feeling} (feel) insecure right now because everyone is looking at her."],
+      ["type","He {has never been|'s never been} (never / be) so responsible before."],
+      ["build","Every Saturday / we / play / outside / with our dog."]
+    ]
+  }
+];
+const SALT = "childhood-playground-a2b1-2026";
+/* ===================== конец содержания ===================== */
+
+const $=id=>document.getElementById(id);
+const view=$("view");
+const KEY="childhood-playground-v1";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const plural=(n,f)=>{const a=n%10,b=n%100;return f[(a===1&&b!==11)?0:(a>=2&&a<=4&&(b<10||b>=20))?1:2]};
+const PRAISE=["Great!","Well done!","Super!","Yes!","Awesome!","Brilliant!"];
+const TASKS=["задание","задания","заданий"];
+
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{st:{},name:""}}catch(e){return{st:{},name:""}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}}
+let progress=load();if(!progress.st)progress.st={};
+
+const stTotal=s=>s.items.length+(s.autoWords?WORDS.length:0);
+const GRAND=STATIONS.reduce((n,s)=>n+stTotal(s),0);
+
+/* ---------- звук ---------- */
+let voice=null;
+function pickVoice(){if(!("speechSynthesis" in window))return;const v=speechSynthesis.getVoices();voice=v.find(x=>x.lang==="en-US")||v.find(x=>/^en/.test(x.lang))||null}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function speak(t){
+  if(!$("sound").checked||!("speechSynthesis" in window)||!t)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t.replace(/___/g,"blank"));u.lang="en-US";u.rate=.92;if(voice)u.voice=voice;
+  speechSynthesis.speak(u);
+}
+$("sound").onchange=()=>{if(!$("sound").checked&&"speechSynthesis" in window)speechSynthesis.cancel()};
+
+/* ---------- счётчики ---------- */
+function stats(){let c=0,done=0;STATIONS.forEach(s=>{const r=progress.st[s.id];if(r){c+=r.correct;done++}});return{c,done}}
+function hud(){const{c}=stats();$("stars").textContent=`⭐ ${c}`;$("bar").style.width=(c/GRAND*100)+"%"}
+const starsFor=(c,n)=>{const p=c/n;return p>=.9?3:p>=.7?2:p>0?1:0};
+const starStr=k=>"⭐".repeat(k)+"☆".repeat(3-k);
+
+/* ---------- карта ---------- */
+let run=null;
+function renderMap(){
+  run=null;if("speechSynthesis" in window)speechSynthesis.cancel();
+  const{done}=stats();
+  view.innerHTML=`
+    <div class="card"><p class="intro">Добро пожаловать на детскую площадку! Здесь ${STATIONS.length} ${plural(STATIONS.length,["станция","станции","станций"])} и ${GRAND} ${plural(GRAND,TASKS)}. Сначала слова и фразы, потом четыре времени, в конце общий раунд. Перед каждой станцией есть короткое объяснение: прочитайте его, а потом играйте.${done?` Пройдено станций: ${done} из ${STATIONS.length}.`:""}</p></div>
+    <div class="map">${STATIONS.map((s,i)=>{
+      const r=progress.st[s.id],n=stTotal(s);
+      return `<button class="st" style="--c:${s.color}" data-i="${i}">
+        <span class="em">${s.emoji}</span><span class="no">Станция ${i+1}: ${esc(s.place)}</span>
+        <span class="nm">${esc(s.title)}</span><span class="ds">${esc(s.desc)}</span>
+        <span class="bar"><i style="width:${r?r.correct/r.total*100:0}%"></i></span>
+        <span class="res">${r?`${starStr(starsFor(r.correct,r.total))} ${r.correct} / ${r.total}`:`${n} ${plural(n,TASKS)}`}</span></button>`}).join("")}</div>
+    <div class="row"><button id="finishBtn">📋 Получить результат для учителя</button><button id="resetAll">🔄 Сбросить прогресс</button></div>`;
+  view.querySelectorAll(".st").forEach(b=>b.onclick=()=>openStation(+b.dataset.i));
+  $("finishBtn").onclick=showResult;
+  $("resetAll").onclick=()=>{if(!confirm("Стереть все результаты и начать сначала?"))return;progress={st:{},name:""};save();$("studentName").value="";$("result").classList.remove("show");hud();renderMap()};
+  hud();
+}
+
+/* ---------- теория ---------- */
+function theoryHTML(s){
+  const t=s.theory,ex=x=>`<div class="ex" lang="en">${esc(x)} <button class="sp" data-say="${esc(x)}" aria-label="Послушать">🔊</button></div>`;
+  let h="";
+  if(t.intro)h+=`<p>${esc(t.intro)}</p>`;
+  if(t.words)h+=`<div class="chips" lang="en">${WORDS.map(w=>`<button data-say="${esc(w[0])}">${esc(w[0])}</button>`).join("")}</div>`;
+  if(t.phrases)h+=`<div class="phr">${PHRASES.map(p=>`<span class="e">${p[3]}</span><div><b lang="en">${esc(p[0])}</b> <button class="sp" data-say="${esc(p[0])}" style="box-shadow:none;padding:0 4px" aria-label="Послушать">🔊</button><br>${esc(p[1])} — ${esc(p[2])}</div>`).join("")}</div>`;
+  if(t.use)h+=`<h3>Когда используем</h3><ul>${t.use.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  if(t.form)h+=`<h3>Как образуется</h3><ul lang="en">${t.form.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  if(t.markers)h+=`<h3>Маркеры времени</h3><div class="markers" lang="en">${t.markers.map(m=>`<span>${esc(m)}</span>`).join("")}</div>`;
+  if(t.examples)h+=`<h3>Примеры</h3>${t.examples.map(ex).join("")}`;
+  if(t.tip)h+=`<div class="tip">💡 ${esc(t.tip).replace(/\n/g,"<br>")}</div>`;
+  return h;
+}
+const bindSay=root=>root.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak(b.dataset.say));
+
+function openStation(i){
+  const s=STATIONS[i];
+  $("result").classList.remove("show");run=null;
+  view.innerHTML=`<div class="card theory">
+    <div class="ttop"><button id="back">← Карта</button><span class="cnt">${stTotal(s)} ${plural(stTotal(s),TASKS)}</span></div>
+    <h2>${s.emoji} ${esc(s.title)}</h2>
+    ${theoryHTML(s)}
+    <div class="row"><button class="big-btn" id="go">Я готов(а)! Начать</button></div></div>`;
+  bindSay(view);
+  $("back").onclick=renderMap;
+  $("go").onclick=()=>startTasks(i);
+  window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  $("go").focus({preventScroll:true});
+}
+
+/* ---------- подготовка заданий ---------- */
+function buildItems(s){
+  let list=[];
+  if(s.autoWords){
+    list=shuffle(WORDS.map(w=>{
+      const others=shuffle(WORDS.filter(x=>x!==w)).slice(0,3).map(x=>x[0]);
+      return{kind:"choice",view:"meaning",emoji:w[2],def:w[1],options:[w[0],...others],answer:w[0],full:w[0],label:`${w[1]} → ${w[0]}`,say:w[0]};
+    }));
+  }
+  const rest=s.items.map(it=>{
+    const[t]=it;
+    if(t==="gap"||t==="choose"){
+      const opts=t==="gap"?[it[2],...it[3]]:it[2];
+      const full=it[1].replace("___",opts[0]);
+      return{kind:"choice",view:"sentence",sentence:it[1],options:opts,answer:opts[0],full,note:t==="choose"?it[3]:"",label:full,say:full};
+    }
+    if(t==="react"){
+      const ph=PHRASES.find(p=>p[0]===it[2]);
+      return{kind:"choice",view:"react",situation:it[1],options:[it[2],...it[3]],answer:it[2],emoji:ph?ph[3]:"",full:it[2],label:`${it[1]} → ${it[2]}`,say:it[2]};
+    }
+    if(t==="type")return{kind:"type",src:it[1]};
+    if(t==="build")return{kind:"build",src:it[1]};
+  });
+  return list.concat(s.autoWords?shuffle(rest):shuffle(rest));
+}
+
+/* ---------- задания ---------- */
+function startTasks(i){
+  const s=STATIONS[i];
+  run={i,s,items:buildItems(s),k:0,correct:0,wrong:[],answered:false};
+  run.n=run.items.length;
+  view.innerHTML=`<div class="card">
+    <div class="ttop"><button id="back">← Карта</button><span class="ttl">${s.emoji} ${esc(s.title)}</span><span class="cnt" id="cnt"></span></div>
+    <div class="bar"><i id="sbar"></i></div>
+    <details class="rule"><summary>📖 Правило</summary><div class="theory">${theoryHTML(s)}</div></details>
+    <div id="stage" class="stage" tabindex="-1"></div>
+    <div id="fb" class="fb" aria-live="polite"></div>
+    <div class="row"><button id="nextBtn" class="next" hidden>Next ➜</button></div></div>`;
+  bindSay(view.querySelector(".rule"));
+  $("back").onclick=renderMap;$("nextBtn").onclick=next;
+  renderItem();
+}
+function renderItem(){
+  const it=run.items[run.k];
+  run.answered=false;run.removeLast=null;
+  $("fb").innerHTML="";$("nextBtn").hidden=true;
+  $("nextBtn").textContent=run.k===run.n-1?"Finish 🏁":"Next ➜";
+  $("cnt").textContent=`${run.k+1} / ${run.n}`;
+  $("sbar").style.width=(run.k/run.n*100)+"%";
+  ({choice:renderChoice,type:renderType,build:renderBuild})[it.kind](it);
+  if(it.kind!=="type")$("stage").focus({preventScroll:true});
+}
+function mark(ok,label,html,sayText,el){
+  run.answered=true;
+  if(ok)run.correct++;else run.wrong.push(label);
+  $("fb").innerHTML=`<span class="${ok?"ok":"bad"}">${ok?"✅ "+PRAISE[Math.floor(Math.random()*PRAISE.length)]:"❌ Not quite."}</span> ${html}`;
+  if(el){el.classList.remove("pop","wob");void el.offsetWidth;el.classList.add(ok?"pop":"wob")}
+  speak(sayText);
+  const nb=$("nextBtn");nb.hidden=false;nb.focus({preventScroll:true});
+}
+function next(){run.k++;if(run.k>=run.n)finishStation();else renderItem()}
+
+function renderChoice(it){
+  let head="";
+  if(it.view==="meaning")head=`<div class="emo" id="anim">${it.emoji}</div><p class="def" lang="en">“${esc(it.def)}”</p><p class="ask" lang="en">Which word or phrase is it?</p>`;
+  if(it.view==="sentence")head=`<p class="sentence" lang="en" id="anim">${esc(it.sentence).replace("___",'<span class="gap" id="gap">&nbsp;</span>')}</p>`;
+  if(it.view==="react")head=`<div class="chat" lang="en"><div class="msg">${esc(it.situation)}</div><div class="msg me" id="anim">…</div></div><p class="ask" lang="en">What do you say?</p>`;
+  const arr=shuffle(it.options.map(o=>({o,ok:o===it.answer})));
+  $("stage").innerHTML=head+`<div class="opts">${arr.map((a,k)=>`<button class="ob c${k%4}" data-k="${k}" data-key="${k+1}"><kbd>${k+1}</kbd><span lang="en">${esc(a.o)}</span></button>`).join("")}</div>`;
+  const btns=[...$("stage").querySelectorAll(".ob")];
+  btns.forEach(b=>b.onclick=()=>{
+    if(run.answered)return;
+    const k=+b.dataset.k,ok=arr[k].ok;
+    btns.forEach((x,j)=>{x.disabled=true;if(arr[j].ok)x.classList.add("right")});
+    if(!ok)b.classList.add("wrong");
+    if(it.view==="sentence"){const g=$("gap");g.textContent=it.answer;g.classList.add("filled")}
+    if(it.view==="react")$("anim").textContent=`${it.emoji} ${it.answer}`;
+    let html="";
+    if(it.view==="meaning")html=`<span lang="en">${esc(it.answer)}</span> = ${esc(it.def)}`;
+    if(it.view==="sentence")html=`<span lang="en">${esc(it.full)}</span>${it.note?`<small>${esc(it.note)}</small>`:""}`;
+    if(it.view==="react"){const ph=PHRASES.find(p=>p[0]===it.answer);html=`<span lang="en">${esc(it.answer)}</span>${ph?`<small>${esc(ph[1])} — ${esc(ph[2])}</small>`:""}`}
+    mark(ok,it.label,html,it.say,$("anim"));
+  });
+}
+
+function norm(t){
+  return t.toLowerCase().replace(/[’‘`´]/g,"'").replace(/n't\b/g," not").replace(/'ve\b/g," have")
+    .replace(/'re\b/g," are").replace(/'m\b/g," am").replace(/[.!?,"]+$/,"").replace(/\s+/g," ").trim();
+}
+function renderType(it){
+  const m=it.src.match(/\{([^}]+)\}\s*(\([^)]*\))?/);
+  const answers=m[1].split("|"),hint=m[2]||"";
+  const before=it.src.slice(0,m.index),after=it.src.slice(m.index+m[0].length);
+  const full=(before+answers[0]+(after&&!/^[\s.,!?]/.test(after)?" ":"")+after).replace(/\s+/g," ").trim();
+  $("stage").innerHTML=`<p class="sentence" lang="en" id="anim">${esc(before)}<input id="ans" class="tin" size="${Math.max(8,answers[0].length+3)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Your answer ${esc(hint)}"> <span class="hint">${esc(hint)}</span> ${esc(after)}</p>
+    <p class="ask" lang="en" style="text-align:left">Type the verb in the correct form.</p>
+    <div class="row"><button id="check">Check ✔</button></div>`;
+  const inp=$("ans");inp.focus({preventScroll:true});
+  const check=()=>{
+    if(run.answered)return;
+    const v=norm(inp.value);
+    if(!v){$("fb").innerHTML='<span class="bad">Type your answer.</span>';inp.focus();return}
+    const ok=answers.some(a=>norm(a)===v);
+    inp.readOnly=true;inp.classList.add(ok?"right":"wrong");$("check").disabled=true;
+    mark(ok,full,ok?`<span lang="en">${esc(full)}</span>`:`Correct: <b lang="en">${esc(answers[0])}</b><small lang="en">${esc(full)}</small>`,full,$("anim"));
+  };
+  $("check").onclick=check;
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(run.answered)next();else check()}});
+}
+
+function renderBuild(it){
+  const tiles=it.src.split("/").map(x=>x.trim()).filter(Boolean),target=tiles.join(" ");
+  let pool=shuffle(tiles.map((_,k)=>k));
+  if(tiles.length>1)while(pool.every((v,k)=>v===k))pool=shuffle(pool);
+  let placed=[];
+  $("stage").innerHTML=`<p class="ask" lang="en" style="text-align:left">Put the words in the right order. The word with a capital letter goes first.</p>
+    <div class="line" id="line" lang="en" aria-label="Your sentence"></div><div class="pool" id="pool" lang="en"></div>
+    <div class="row"><button id="check">Check ✔</button><button id="clear">Clear</button></div>`;
+  const draw=()=>{
+    $("line").innerHTML=placed.map(k=>`<button class="tile" data-k="${k}">${esc(tiles[k])}</button>`).join("");
+    $("pool").innerHTML=pool.map(k=>`<button class="tile" data-k="${k}">${esc(tiles[k])}</button>`).join("");
+    $("line").querySelectorAll(".tile").forEach(b=>b.onclick=()=>{if(run.answered)return;const k=+b.dataset.k;placed=placed.filter(x=>x!==k);pool.push(k);draw()});
+    $("pool").querySelectorAll(".tile").forEach(b=>b.onclick=()=>{if(run.answered)return;const k=+b.dataset.k;pool=pool.filter(x=>x!==k);placed.push(k);draw();const f=$("pool").querySelector(".tile");(f||$("check")).focus()});
+  };
+  run.removeLast=()=>{if(placed.length){pool.push(placed.pop());draw()}};
+  draw();
+  $("clear").onclick=()=>{if(run.answered)return;pool=pool.concat(placed);placed=[];draw()};
+  $("check").onclick=()=>{
+    if(run.answered)return;
+    if(placed.length<tiles.length){$("fb").innerHTML=`<span class="bad">Use all the words.</span> Words left: ${pool.length}.`;return}
+    const ok=placed.map(k=>tiles[k]).join(" ")===target;
+    $("stage").querySelectorAll(".tile").forEach(t=>t.disabled=true);$("check").disabled=true;$("clear").disabled=true;
+    $("line").classList.add(ok?"right":"wrong");
+    mark(ok,target,ok?`<span lang="en">${esc(target)}</span>`:`Correct: <span lang="en">${esc(target)}</span>`,target,$("line"));
+  };
+}
+
+/* ---------- итог станции ---------- */
+function finishStation(){
+  const s=run.s,c=run.correct,n=run.n,k=starsFor(c,n);
+  progress.st[s.id]={correct:c,total:n,wrong:run.wrong};save();hud();
+  $("cnt").textContent="🏁";$("sbar").style.width="100%";$("fb").innerHTML="";$("nextBtn").hidden=true;
+  const say=k===3?"Fantastic! You are a star!":k===2?"Good job! Keep going!":"Nice try! Read the rule and play again!";
+  const ni=run.i+1<STATIONS.length?run.i+1:null;
+  $("stage").innerHTML=`<div class="sum">
+    <div class="stars">${starStr(k)}</div><div class="big">${c} / ${n}</div>
+    <p lang="en"><b>${say}</b></p>
+    ${run.wrong.length?`<div>Ошибки, на которые стоит посмотреть ещё раз:</div><ul lang="en">${run.wrong.map(w=>`<li>${esc(w)}</li>`).join("")}</ul>`:"<p>Ни одной ошибки! 🎉</p>"}
+    <div class="row" style="justify-content:center"><button id="toMap">🗺️ Карта</button><button id="again">🔁 Пройти ещё раз</button>${ni!==null?`<button class="big-btn" id="nx">${STATIONS[ni].emoji} Следующая станция</button>`:`<button class="big-btn" id="toRes">📋 Получить результат</button>`}</div></div>`;
+  speak(say);
+  const i=run.i;run.summary=true;
+  $("toMap").onclick=renderMap;$("again").onclick=()=>startTasks(i);
+  if(ni!==null)$("nx").onclick=()=>openStation(ni);else $("toRes").onclick=()=>{renderMap();showResult()};
+  $("stage").focus({preventScroll:true});
+}
+
+/* ---------- клавиатура ---------- */
+document.addEventListener("keydown",e=>{
+  const tag=e.target.tagName;
+  if(tag==="INPUT"||tag==="TEXTAREA"||!run)return;
+  if(e.key==="Escape"){renderMap();return}
+  if(run.summary)return;
+  if(e.key==="Enter"){
+    if(tag==="BUTTON"||tag==="SUMMARY")return;
+    if(!$("nextBtn").hidden){e.preventDefault();next();return}
+    const c=$("check");if(c&&!run.answered){e.preventDefault();c.click()}return;
+  }
+  if(e.key==="Backspace"&&run.removeLast&&!run.answered){e.preventDefault();run.removeLast();return}
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  const b=[...view.querySelectorAll("[data-key]")].find(x=>x.dataset.key===e.key&&!x.disabled);
+  if(b){e.preventDefault();b.click()}
+});
+
+/* ---------- результат и код ---------- */
+function makeCode(name,c,done){
+  const str=[SALT,name.trim().toLowerCase(),c,done].join("|");
+  let h=2166136261;
+  for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+  return h.toString(36).toUpperCase().padStart(7,"0").slice(-6);
+}
+function buildReport(){
+  const name=$("studentName").value.trim()||"(имя не указано)";
+  const{c,done}=stats();
+  const lines=STATIONS.map(s=>{const r=progress.st[s.id];return `${s.title}: ${r?`${r.correct}/${r.total}`:"не пройдено"}`});
+  const withErr=STATIONS.filter(s=>progress.st[s.id]&&progress.st[s.id].wrong.length);
+  const nErr=withErr.reduce((a,s)=>a+progress.st[s.id].wrong.length,0);
+  $("report").textContent=
+    `Childhood Playground (A2–B1): слова + 4 времени\nИмя: ${name}\nВерно: ${c}/${GRAND}\nПройдено станций: ${done}/${STATIONS.length}\n`+
+    lines.join("\n")+
+    (nErr?`\nОшибки (${nErr}):\n`+withErr.map(s=>`${s.title}:\n– ${progress.st[s.id].wrong.join("\n– ")}`).join("\n"):(done?"\nОшибок нет":""))+
+    `\nКод: ${makeCode(name,c,done)}`;
+}
+function showResult(){
+  const{done}=stats();
+  if(done<STATIONS.length&&!confirm(`Пройдено ${done} из ${STATIONS.length} станций. Всё равно получить результат?`))return;
+  $("studentName").value=progress.name||"";
+  $("resTitle").textContent=done===STATIONS.length?"🎉 Все станции пройдены!":`Пройдено станций: ${done} из ${STATIONS.length}`;
+  buildReport();$("copied").textContent="";
+  $("result").classList.add("show");
+  $("result").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+  $("studentName").focus({preventScroll:true});
+}
+$("studentName").oninput=()=>{progress.name=$("studentName").value;save();buildReport()};
+$("copyBtn").onclick=async()=>{
+  const t=$("report").textContent,msg=$("copied");
+  try{await navigator.clipboard.writeText(t);msg.textContent="Скопировано ✅"}
+  catch(e){const r=document.createRange();r.selectNodeContents($("report"));const s=getSelection();s.removeAllRanges();s.addRange(r);msg.textContent="Текст выделен, нажмите Ctrl+C"}
+};
+
+/* режим учителя: ссылка с #teacher в конце */
+if(location.hash==="#teacher")$("teacher").classList.add("show");
+$("tCheck").onclick=()=>{
+  const v=id=>$(id).value.trim();
+  const ok=makeCode(v("tName"),v("tCorrect").split("/")[0].trim(),v("tDone").split("/")[0].trim())===v("tCode").toUpperCase();
+  $("tResult").innerHTML=ok?'<span class="ok">Код верный, результат не изменён.</span>':'<span class="bad">Код не совпадает. Проверьте, что данные введены точно как в результате.</span>';
+};
+
+renderMap();
+</script>
+</body>
+</html>
