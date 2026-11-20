@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Word Camp: слова о детстве (A2–B1)</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --text:#2B3440; --muted:#6B7785; --blue:#1899D6; --blueL:#DDF4FF; --blueB:#84D8FF;
+    --green:#58CC02; --greenD:#46A302; --greenL:#D7FFB8;
+    --red:#FF4B4B; --redL:#FFDFE0; --line:#E2E8EE;
+    --orange:#FF9600; --orangeD:#D97F00; --pine:#2F7D4F; --pine2:#3F9A62;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:Nunito,"Trebuchet MS",sans-serif;color:var(--text);min-height:100vh;background:#CDEFFF}
+
+  /* ---------- фон: летний лагерь ---------- */
+  .sky{position:fixed;inset:0;z-index:-3;background:linear-gradient(#8FD3FE 0%,#CDEFFF 55%,#FFF4D6 100%)}
+  .sun{position:fixed;left:7vw;top:96px;width:76px;height:76px;border-radius:50%;background:#FFD43B;box-shadow:0 0 0 14px rgba(255,212,59,.3);z-index:-2}
+  .cloud{position:fixed;background:#fff;border-radius:40px;height:30px;z-index:-2;animation:drift 70s linear infinite alternate}
+  .cloud::before{content:"";position:absolute;width:46px;height:46px;border-radius:50%;background:#fff;left:16px;top:-22px}
+  .k1{right:10vw;top:120px;width:110px}.k2{left:40vw;top:180px;width:80px;animation-duration:90s}
+  @keyframes drift{to{transform:translateX(70px)}}
+  .ground{position:fixed;left:0;right:0;bottom:0;height:200px;z-index:-1;pointer-events:none}
+  .ground svg{position:absolute;bottom:0;left:0;width:100%;height:200px}
+
+  .bunting{display:flex;justify-content:space-between;height:44px;margin:0 -16px 6px;position:relative;overflow:hidden}
+  .bunting::before{content:"";position:absolute;left:0;right:0;top:4px;height:3px;background:#8A6A4B;border-radius:3px}
+  .bunting span{width:34px;height:40px;margin-top:6px;clip-path:polygon(0 0,100% 0,50% 100%);flex:none}
+  .bunting span:nth-child(5n+1){background:#FF6B6B}.bunting span:nth-child(5n+2){background:#FFD43B}
+  .bunting span:nth-child(5n+3){background:#4DABF7}.bunting span:nth-child(5n+4){background:#69DB7C}.bunting span:nth-child(5n){background:#B197FC}
+
+  .page{max-width:820px;margin:0 auto;padding:0 16px 230px}
+  header h1{font-family:"Baloo 2",sans-serif;font-weight:800;font-size:50px;margin:0;color:#fff;line-height:1;text-shadow:0 4px 0 var(--orangeD),0 0 2px var(--orangeD)}
+  .sub{color:#0E4C6B;font-weight:800;margin:8px 0 14px;max-width:60ch}
+  .hud{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:20px}
+  .pill{background:#fff;border-radius:16px;padding:6px 14px;font-weight:800;color:var(--orangeD);border:2px solid var(--line);border-bottom-width:4px;white-space:nowrap}
+  .tog{display:flex;gap:6px;align-items:center;cursor:pointer}
+  .bar{flex:1;min-width:140px;height:18px;border-radius:10px;background:#E5E5E5;overflow:hidden}
+  .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#FFC800,#FF9600);border-radius:10px;transition:width .5s;box-shadow:inset 0 -5px 0 rgba(0,0,0,.08)}
+
+  button{font-family:Nunito,sans-serif;font-weight:800;font-size:15px;cursor:pointer;border-radius:16px;padding:10px 16px;background:#fff;color:var(--blue);border:2px solid var(--line);border-bottom-width:5px;transition:transform .08s}
+  button:active{transform:translateY(2px);border-bottom-width:3px}
+  button:disabled{cursor:default}
+  button:focus-visible,input:focus-visible,summary:focus-visible,.stage:focus-visible{outline:4px solid var(--orange);outline-offset:3px}
+  .go{font-family:"Baloo 2",sans-serif;font-size:21px;padding:10px 28px;background:var(--green);color:#fff;border-color:var(--greenD)}
+  .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
+
+  .card{background:#fff;border-radius:24px;padding:22px 24px;border:3px solid var(--line);border-bottom-width:8px;margin-bottom:22px}
+  .card h2{font-family:"Baloo 2",sans-serif;font-size:32px;margin:0 0 4px;color:var(--text);line-height:1.1}
+  .card h3{font-family:"Baloo 2",sans-serif;font-size:21px;margin:14px 0 4px;color:var(--orangeD)}
+
+  /* ---------- карта лагеря ---------- */
+  .intro{font-weight:700;line-height:1.55;margin:0}
+  .map{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px;margin-bottom:20px}
+  .st{display:grid;grid-template-columns:64px 1fr;gap:4px 12px;text-align:left;padding:14px 16px;border-radius:22px;color:var(--text);border-color:var(--line);border-bottom-color:var(--c)}
+  .st .em{grid-row:span 4;width:64px;height:64px;border-radius:18px;display:grid;place-items:center;font-size:36px;background:color-mix(in srgb,var(--c) 18%,#fff)}
+  .st .no{font-size:12px;color:var(--muted)}
+  .st .nm{font-family:"Baloo 2",sans-serif;font-size:21px;line-height:1.1}
+  .st .ds{font-size:13px;color:var(--muted)}
+  .st .bar{height:10px;min-width:0;margin-top:6px;grid-column:1/-1}
+  .st .res{grid-column:1/-1;font-size:13px;color:var(--muted)}
+  .st.done .res{color:var(--greenD)}
+
+  /* ---------- изучение слов ---------- */
+  .wl{display:grid;grid-template-columns:auto 1fr auto;gap:0 12px;align-items:center}
+  .wl>*{padding:7px 0;border-bottom:2px dashed var(--line)}
+  .wl b{font-size:18px}
+  .wl .sp{border:none;background:none;padding:2px 6px;font-size:18px}
+  .note{background:#FFF4D6;border-radius:16px;padding:10px 14px;margin-top:12px;font-weight:700;line-height:1.6}
+  .note ul{margin:4px 0;padding-left:20px}
+
+  /* ---------- сопоставление (как в Duolingo) ---------- */
+  .ttop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .ttl{font-family:"Baloo 2",sans-serif;font-size:22px}
+  .cnt{font-weight:800;color:var(--muted)}
+  .tbar{height:14px;margin:12px 0 4px}
+  .timer i{background:linear-gradient(90deg,#FF4B4B,#FF9600)}
+  .stage{margin-top:16px;min-height:200px}
+  .stage:focus{outline:none}
+  .ask{color:var(--muted);font-weight:800;margin:0 0 12px}
+  .board{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px}
+  .col{display:grid;gap:12px;align-content:start}
+  .tile{position:relative;min-height:60px;width:100%;padding:10px 12px 10px 34px;font-size:17px;color:var(--text);text-align:left;line-height:1.25;transition:opacity .25s,transform .25s}
+  .tile kbd{position:absolute;left:8px;top:50%;transform:translateY(-50%);font:800 11px Nunito,sans-serif;color:#AFB6BD;border:2px solid #E5E5E5;border-radius:7px;padding:0 5px}
+  .tile.sel{background:var(--blueL);border-color:var(--blueB);color:var(--blue)}
+  .tile.ok{background:var(--greenL);border-color:var(--green);color:var(--greenD)}
+  .tile.bad{background:var(--redL);border-color:var(--red);color:var(--red);animation:shake .4s}
+  .tile.gone{opacity:0;transform:scale(.85);pointer-events:none}
+  .tile.empty{visibility:hidden}
+  .tile.in{animation:popin .3s}
+  .tile .ear{font-size:24px}
+  @keyframes shake{0%,100%{transform:none}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  @keyframes popin{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+
+  /* ---------- задания со словами и грамматикой ---------- */
+  details.rule{margin:12px 0 0;background:#F7F9FC;border-radius:16px;padding:6px 14px}
+  details.rule summary{cursor:pointer;font-weight:800;color:var(--orangeD)}
+  .sentence{font-size:23px;line-height:1.7;margin:4px 0 16px}
+  .gap{display:inline-block;min-width:100px;border-bottom:4px solid #AFB6BD;text-align:center;padding:0 4px}
+  .gap.filled{border-color:var(--green);color:var(--greenD);font-weight:800}
+  .opts{display:grid;gap:12px}
+  .ob{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font-size:19px;color:var(--text);padding:12px 14px}
+  .ob kbd{font:800 12px Nunito,sans-serif;color:#AFB6BD;border:2px solid #E5E5E5;border-radius:8px;padding:1px 6px}
+  .ob.right{background:var(--greenL);border-color:var(--green);color:var(--greenD)}
+  .ob.wrong{background:var(--redL);border-color:var(--red);color:var(--red)}
+  .ob:disabled:not(.right):not(.wrong){opacity:.5}
+  .line{min-height:62px;border-bottom:3px solid #AFB6BD;padding:8px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end}
+  .line:empty::after{content:"Tap the words below";color:var(--muted);font-weight:700}
+  .pool{display:flex;flex-wrap:wrap;gap:10px;padding:16px 0 4px;min-height:60px}
+  .wt{font-size:18px;padding:8px 14px;color:var(--text)}
+  .line.right .wt{background:var(--greenL);border-color:var(--green)}.line.wrong .wt{background:var(--redL);border-color:var(--red)}
+  .tin{font:800 21px Nunito,sans-serif;border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;padding:3px 8px;color:var(--text);max-width:100%}
+  .tin.right{border-color:var(--green);background:var(--greenL)}.tin.wrong{border-color:var(--red);background:var(--redL)}
+  .hint{color:var(--muted);font-size:18px;font-weight:700}
+
+  .fb{min-height:28px;margin-top:16px;font-size:17px;font-weight:700;line-height:1.55}
+  .fb .ok,.ok{color:var(--greenD);font-weight:800}.fb .bad,.bad{color:var(--red);font-weight:800}
+  .fb small{display:block;color:var(--muted);font-size:15px}
+  .next{font-family:"Baloo 2",sans-serif;font-size:19px;padding:9px 26px;background:var(--green);color:#fff;border-color:var(--greenD)}
+
+  .sum{text-align:center}
+  .sum .stars{font-size:52px;letter-spacing:6px}
+  .sum .big{font-family:"Baloo 2",sans-serif;font-size:46px}
+  .sum ul{text-align:left;display:inline-block;color:var(--red);font-weight:700;margin:6px 0}
+
+  .result,.teacher{display:none}.result.show,.teacher.show{display:block}
+  .result input,.teacher input{font:700 16px Nunito,sans-serif;padding:9px 12px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;margin:6px 8px 6px 0}
+  .result input{width:100%;max-width:330px}
+  .report{white-space:pre-line;background:#F3F6F9;border-radius:16px;padding:12px 14px;margin:10px 0;font-weight:700}
+
+  @media (max-width:600px){
+    header h1{font-size:38px}
+    .card{padding:18px 14px}
+    .board{gap:10px}.col{gap:10px}
+    .tile{font-size:15px;padding:8px 8px 8px 28px;min-height:56px}.tile kbd{left:5px}
+    .sentence{font-size:20px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"></div>
+<div class="sun" aria-hidden="true"></div>
+<div class="cloud k1" aria-hidden="true"></div><div class="cloud k2" aria-hidden="true"></div>
+<div class="ground" aria-hidden="true">
+  <svg viewBox="0 0 1200 200" preserveAspectRatio="xMidYMax slice">
+    <path d="M0 120 Q200 70 420 110 T850 100 T1200 95 V200 H0Z" fill="#8FD18A"/>
+    <path d="M0 150 Q300 115 600 145 T1200 135 V200 H0Z" fill="#69C36A"/>
+    <g fill="#2F7D4F"><path d="M60 140 l28 -70 l28 70z"/><path d="M100 150 l22 -56 l22 56z"/><path d="M1050 132 l30 -78 l30 78z"/><path d="M1100 140 l24 -60 l24 60z"/><path d="M980 140 l20 -50 l20 50z"/></g>
+    <g><path d="M250 175 l55 -75 l55 75z" fill="#FF922B"/><path d="M305 100 l0 75" stroke="#C45E00" stroke-width="4"/><path d="M290 175 l15 -32 l15 32z" fill="#7A3D00"/></g>
+    <g><path d="M820 172 l45 -62 l45 62z" fill="#4DABF7"/><path d="M865 110 v62" stroke="#1C7ED6" stroke-width="4"/><path d="M853 172 l12 -26 l12 26z" fill="#0B4F8A"/></g>
+    <g transform="translate(560 160)"><path d="M-22 18 l44 -10 M-22 8 l44 10" stroke="#8A5A2B" stroke-width="7" stroke-linecap="round"/><path d="M0 8 C-14 -6 -6 -20 0 -32 C6 -20 16 -8 0 8z" fill="#FF6B00"/><path d="M0 6 C-6 -2 -2 -10 0 -16 C3 -10 7 -2 0 6z" fill="#FFD43B"/></g>
+  </svg>
+</div>
+
+<div class="page">
+  <div class="bunting" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  <header>
+    <h1>🏕️ Word Camp</h1>
+    <p class="sub">Летний лагерь слов о детстве: фразы, игры, характер, взросление. Уровень A2–B1.</p>
+    <div class="hud">
+      <span class="pill" id="score">🔥 0</span>
+      <div class="bar" title="Общий прогресс"><i id="bar"></i></div>
+      <label class="pill tog"><input type="checkbox" id="sound" checked> 🔊 Звук</label>
+    </div>
+  </header>
+
+  <main id="view"></main>
+
+  <section class="card result" id="result">
+    <h2 id="resTitle">Результат</h2>
+    <div>Впишите своё имя, скопируйте результат и отправьте его учителю в ответе к заданию.</div>
+    <input id="studentName" placeholder="Имя и фамилия" autocomplete="name">
+    <div class="report" id="report"></div>
+    <div class="row"><button id="copyBtn">📋 Скопировать результат</button><span id="copied"></span></div>
+  </section>
+
+  <section class="card teacher" id="teacher">
+    <h2>Проверка кода</h2>
+    <div>Введите данные из результата ученика.</div>
+    <div class="row">
+      <input id="tName" placeholder="Имя">
+      <input id="tCorrect" placeholder="Верно" size="7">
+      <input id="tDone" placeholder="Станций" size="7">
+      <input id="tCode" placeholder="Код" size="8">
+      <button id="tCheck">Проверить</button>
+    </div>
+    <div id="tResult" aria-live="polite"></div>
+  </section>
+</div>
+
+<script>
+/* =====================================================================
+   СОДЕРЖАНИЕ ИГРЫ. Меняйте тексты здесь, количество заданий считается само.
+
+   SETS — наборы слов для сопоставления: ["английский", "перевод"]
+   Станции:
+     type:"match"  — сопоставление набора set (как в Duolingo)
+     type:"listen" — сопоставление на слух: count случайных слов из всех наборов
+     type:"match", from:"all", count, seconds — финальный раунд на время
+     type:"tasks"  — слова + грамматика, форматы заданий:
+       ["choose","Предложение с ___",["верный","неверный","неверный"],"пояснение"]
+       ["type","Yesterday Tom {fell} (fall) down."]   ответ в {}, варианты через |
+       ["build","Слова / через / косую черту."]
+   ===================================================================== */
+const SETS = {
+  lesson:[
+    ["for the fun of it","ради удовольствия, просто так"],
+    ["to be into sth","увлекаться чем-то"],
+    ["to be dying to do sth","очень-очень хотеть что-то сделать"],
+    ["to be unable to do sth","быть не в состоянии что-то сделать"],
+    ["to feel like doing sth","хотеться что-то сделать"],
+    ["a book lover","любитель книг"],
+    ["a cat lover","любитель кошек"],
+    ["a dog lover","любитель собак"]
+  ],
+  words:[
+    ["honest","честный"],["attitude","отношение"],["lack (of)","нехватка, отсутствие"],
+    ["clarify","уточнить, прояснить"],["fall down","упасть"],["hang","вешать, висеть"],
+    ["melt","таять, плавиться"],["sandpit","песочница"],["Cossacks and Robbers","казаки-разбойники"],
+    ["an abandoned building","заброшка"],["tomorrow","завтра"],["grammar tense","грамматическое время"]
+  ],
+  games:[
+    ["hide-and-seek","прятки"],["tag","догонялки, салки"],["hopscotch","классики"],
+    ["a skipping rope","скакалка"],["monkey bars","рукоход (турник)"],["a seesaw","качели-балансир"],
+    ["a swing","качели"],["a slide","горка"],["build a den","строить шалаш"],
+    ["climb trees","лазать по деревьям"],["a sandcastle","замок из песка"],["a piggyback ride","катание на спине"]
+  ],
+  character:[
+    ["naughty","непослушный"],["spoilt","избалованный"],["cheeky","дерзкий, нахальный"],
+    ["shy","застенчивый"],["stubborn","упрямый"],["curious","любопытный"],
+    ["carefree","беззаботный"],["well-behaved","воспитанный, послушный"],["clumsy","неуклюжий"],
+    ["brave","смелый"],["bossy","любящий командовать"],["polite","вежливый"]
+  ],
+  growing:[
+    ["throw a tantrum","закатить истерику"],["make a mess","устроить беспорядок"],["play a trick on sb","подшутить над кем-то"],
+    ["keep a secret","хранить секрет"],["tell on sb","ябедничать на кого-то"],["fall out with sb","поссориться с кем-то"],
+    ["make friends","подружиться"],["get told off","получить нагоняй"],["be grounded","быть наказанным (не пускают гулять)"],
+    ["pocket money","карманные деньги"],["a bedtime story","сказка на ночь"],["grow up","вырасти, взрослеть"]
+  ]
+};
+
+const STATIONS = [
+  {id:"lesson", emoji:"⛺", place:"Tents", color:"#FF922B", type:"match", set:"lesson",
+   title:"Phrases of the lesson", desc:"Фразы из урока",
+   intro:"Послушайте фразы и запомните перевод. Потом соедините английскую фразу с переводом: верная пара исчезает, а на её место приходит новая.",
+   notes:["to feel like + -ing: I feel like playing outside.","to be dying to + глагол: I'm dying to go to the sleepover.","to be unable to + глагол: Grandpa is unable to run.","to be into + существительное или -ing: He's into football. She's into drawing.","for the fun of it обычно стоит в конце: We did it for the fun of it."]},
+  {id:"words", emoji:"🎒", place:"Backpack", color:"#4DABF7", type:"match", set:"words",
+   title:"Words of the lesson", desc:"Слова из урока",
+   intro:"Слова из нашего урока. Послушайте, запомните перевод и соедините пары.",
+   notes:["fall down — fell down — fallen down (упасть)","hang — hung — hung (вешать, висеть)","melt — правильный глагол: The ice cream melted."]},
+  {id:"games", emoji:"🪁", place:"Playground", color:"#69DB7C", type:"match", set:"games",
+   title:"Games we played", desc:"Игры и площадка", intro:"Во что играют дети? Послушайте и запомните, потом соедините пары."},
+  {id:"character", emoji:"🧸", place:"Big tent", color:"#B197FC", type:"match", set:"character",
+   title:"What kind of kid?", desc:"Характер ребёнка", intro:"Какими бывают дети? Прилагательные о характере: послушайте и соедините пары."},
+  {id:"growing", emoji:"🔥", place:"Campfire", color:"#FF6B6B", type:"match", set:"growing",
+   title:"Growing up", desc:"Коллокации о взрослении",
+   intro:"Устойчивые сочетания о семье и взрослении. Учите их целиком, как одно слово.",
+   notes:["throw a tantrum (не make a tantrum)","make a mess, make friends — с make","tell on sb: My sister told on me. (рассказала маме)"]},
+  {id:"action", emoji:"🛶", place:"Lake", color:"#15AABF", type:"tasks",
+   title:"Words in action", desc:"Слова + грамматика",
+   intro:"Теперь слова в предложениях. Важно и слово, и его форма.",
+   notes:["feel like + -ing: I feel like having an ice cream.","be dying to / be unable to + глагол: I'm dying to see it. She's unable to come.","be into + существительное / -ing: He's into building sandcastles.","Неправильные глаголы: fall – fell, hang – hung, throw – threw, tell – told, grow – grew."],
+   items:[
+     ["choose","I'm really ___ football. I play it every day.",["into","dying","unable"],"to be into sth = увлекаться."],
+     ["choose","It's so hot! I feel like ___ an ice cream.",["having","to have","have"],"feel like + -ing."],
+     ["choose","She's dying ___ the new puppy.",["to see","seeing","see"],"be dying to + глагол."],
+     ["choose","Grandpa is unable ___ the stairs without help.",["to climb","climbing","climb"],"be unable to + глагол."],
+     ["choose","We built a den in the garden just for the fun ___.",["of it","for it","to it"],"for the fun of it."],
+     ["choose","My aunt has three cats. She's a real cat ___.",["lover","love","loving"],"a cat lover = любитель кошек."],
+     ["choose","Don't leave your chocolate in the sun, or it will ___.",["melt","hang","clarify"],"melt = таять."],
+     ["choose","Be careful on the monkey bars, or you'll ___!",["fall down","melt","make friends"],"fall down = упасть."],
+     ["choose","Can you ___ the rules of Cossacks and Robbers? I don't understand them.",["clarify","hang","lack"],"clarify = уточнить."],
+     ["choose","He always tells the truth. He's very ___.",["honest","naughty","spoilt"],"honest = честный."],
+     ["choose","My little sister ___ on me to Mum. Now I'm grounded!",["told","said","spoke"],"tell on sb → told on me."],
+     ["type","Yesterday Tom {fell} (fall) down from the swing."],
+     ["type","When we were kids, we {hung|used to hang} (hang) upside down on the monkey bars."],
+     ["type","Do you feel like {playing} (play) hide-and-seek?"],
+     ["type","My little brother {threw} (throw) a tantrum in the shop yesterday."],
+     ["type","I'm dying {to go} (go) to the sleepover!"],
+     ["build","We / played / Cossacks and Robbers / for the fun of it."],
+     ["build","My sister / is really into / building sandcastles."]
+   ]},
+  {id:"listen", emoji:"🎧", place:"Radio hut", color:"#F783AC", type:"listen", from:"all", count:10,
+   title:"Listen and match", desc:"Соедини на слух",
+   intro:"Слева английские слова спрятаны: нажмите на 🔊 и послушайте, затем найдите перевод справа. Если звук выключен, слова будут видны."},
+  {id:"final", emoji:"⭐", place:"Stargazing hill", color:"#FCC419", type:"match", from:"all", count:12, seconds:120,
+   title:"Speed match", desc:"Финал на время",
+   intro:"Финальный раунд: слова из всех станций, время ограничено. Что не успеете соединить, засчитается как ошибка."}
+];
+const SALT = "word-camp-childhood-2026";
+/* ===================== конец содержания ===================== */
+
+const $=id=>document.getElementById(id);
+const view=$("view");
+const KEY="word-camp-v1";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const plural=(n,f)=>{const a=n%10,b=n%100;return f[(a===1&&b!==11)?0:(a>=2&&a<=4&&(b<10||b>=20))?1:2]};
+const PRAISE=["Great!","Nice!","Awesome!","Super!","Well done!"];
+const ALL=Object.values(SETS).flat();
+const SLOTS=5, LKEYS=["1","2","3","4","5"], RKEYS=["6","7","8","9","0"];
+
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{st:{},name:""}}catch(e){return{st:{},name:""}}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(progress))}catch(e){}}
+let progress=load();if(!progress.st)progress.st={};
+
+const stTotal=s=>s.type==="tasks"?s.items.length:s.set?SETS[s.set].length:Math.min(s.count,ALL.length);
+const stUnit=s=>s.type==="tasks"?["задание","задания","заданий"]:["пара","пары","пар"];
+const GRAND=STATIONS.reduce((n,s)=>n+stTotal(s),0);
+
+/* ---------- звук ---------- */
+let voice=null;
+function pickVoice(){if(!("speechSynthesis" in window))return;const v=speechSynthesis.getVoices();voice=v.find(x=>x.lang==="en-US")||v.find(x=>/^en/.test(x.lang))||null}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+const canSpeak=()=>$("sound").checked&&"speechSynthesis" in window;
+function speak(t){
+  if(!canSpeak()||!t)return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t.replace(/\bsth\b/g,"something").replace(/\bsb\b/g,"somebody").replace(/___/g,"blank"));
+  u.lang="en-US";u.rate=.92;if(voice)u.voice=voice;speechSynthesis.speak(u);
+}
+$("sound").onchange=()=>{if(!$("sound").checked&&"speechSynthesis" in window)speechSynthesis.cancel();if(run&&run.listen)refreshListen()};
+
+/* ---------- счётчики ---------- */
+function stats(){let c=0,done=0;STATIONS.forEach(s=>{const r=progress.st[s.id];if(r){c+=r.correct;done++}});return{c,done}}
+function hud(){const{c}=stats();$("score").textContent=`🔥 ${c}`;$("bar").style.width=(c/GRAND*100)+"%"}
+const starsFor=(c,n)=>{const p=c/n;return p>=.9?3:p>=.7?2:p>0?1:0};
+const starStr=k=>"⭐".repeat(k)+"☆".repeat(3-k);
+
+/* ---------- карта ---------- */
+let run=null,timer=null;
+function clearTimer(){if(timer){clearInterval(timer);timer=null}}
+function renderMap(){
+  clearTimer();run=null;if("speechSynthesis" in window)speechSynthesis.cancel();
+  const{done}=stats();
+  view.innerHTML=`
+    <div class="card"><p class="intro">Добро пожаловать в лагерь! Здесь ${STATIONS.length} ${plural(STATIONS.length,["станция","станции","станций"])} и ${GRAND} ${plural(GRAND,["слово или задание","слова или задания","слов и заданий"])}. На каждой станции сначала посмотрите и послушайте слова, а потом играйте: соединяйте фразу с переводом, пока все пары не исчезнут.${done?` Пройдено станций: ${done} из ${STATIONS.length}.`:""}</p></div>
+    <div class="map">${STATIONS.map((s,i)=>{
+      const r=progress.st[s.id],n=stTotal(s);
+      return `<button class="st${r?" done":""}" style="--c:${s.color}" data-i="${i}">
+        <span class="em">${s.emoji}</span><span class="no">Станция ${i+1}: ${esc(s.place)}</span>
+        <span class="nm">${esc(s.title)}</span><span class="ds">${esc(s.desc)}</span>
+        <span class="bar"><i style="width:${r?r.correct/r.total*100:0}%"></i></span>
+        <span class="res">${r?`${starStr(starsFor(r.correct,r.total))} ${r.correct} / ${r.total}`:`${n} ${plural(n,stUnit(s))}`}</span></button>`}).join("")}</div>
+    <div class="row"><button id="finishBtn">📋 Получить результат для учителя</button><button id="resetAll">🔄 Сбросить прогресс</button></div>`;
+  view.querySelectorAll(".st").forEach(b=>b.onclick=()=>openStation(+b.dataset.i));
+  $("finishBtn").onclick=showResult;
+  $("resetAll").onclick=()=>{if(!confirm("Стереть все результаты и начать сначала?"))return;progress={st:{},name:""};save();$("studentName").value="";$("result").classList.remove("show");hud();renderMap()};
+  hud();
+}
+
+/* ---------- экран изучения ---------- */
+function learnHTML(s){
+  let h=`<p>${esc(s.intro)}</p>`;
+  if(s.set)h+=`<div class="wl">${SETS[s.set].map(p=>`<b lang="en">${esc(p[0])}</b><span>${esc(p[1])}</span><button class="sp" data-say="${esc(p[0])}" aria-label="Послушать">🔊</button>`).join("")}</div>`;
+  if(s.notes)h+=`<div class="note">💡 Запомните:<ul lang="en">${s.notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
+  return h;
+}
+const bindSay=root=>root.querySelectorAll("[data-say]").forEach(b=>b.onclick=()=>speak(b.dataset.say));
+function openStation(i){
+  const s=STATIONS[i];
+  clearTimer();run=null;$("result").classList.remove("show");
+  view.innerHTML=`<div class="card">
+    <div class="ttop"><button id="back">← Лагерь</button><span class="cnt">${stTotal(s)} ${plural(stTotal(s),stUnit(s))}</span></div>
+    <h2>${s.emoji} ${esc(s.title)}</h2>${learnHTML(s)}
+    <div class="row"><button class="go" id="go">${s.seconds?"Поехали! ⏱️":"Я готов(а)! Играть"}</button></div></div>`;
+  bindSay(view);$("back").onclick=renderMap;$("go").onclick=()=>startStation(i);
+  window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});$("go").focus({preventScroll:true});
+}
+
+function shell(s,extra){
+  view.innerHTML=`<div class="card">
+    <div class="ttop"><button id="back">← Лагерь</button><span class="ttl">${s.emoji} ${esc(s.title)}</span><span class="cnt" id="cnt"></span></div>
+    <div class="bar tbar"><i id="sbar"></i></div>${extra||""}
+    ${s.set||s.notes?`<details class="rule"><summary>📖 Слова и подсказки</summary>${learnHTML(s)}</details>`:""}
+    <div id="stage" class="stage" tabindex="-1"></div>
+    <div id="fb" class="fb" aria-live="polite"></div>
+    <div class="row"><button id="nextBtn" class="next" hidden>Next ➜</button></div></div>`;
+  const r=view.querySelector(".rule");if(r)bindSay(r);
+  $("back").onclick=renderMap;
+}
+function startStation(i){
+  const s=STATIONS[i];
+  if(s.type==="tasks")return startTasks(i);
+  const pairs=(s.set?shuffle(SETS[s.set]):shuffle(ALL).slice(0,stTotal(s))).map((p,k)=>({id:k,en:p[0],ru:p[1],err:false}));
+  run={i,s,match:true,listen:s.type==="listen",pairs,queue:pairs.slice(),L:Array(SLOTS).fill(null),R:Array(SLOTS).fill(null),sel:null,done:0,busy:0,n:pairs.length};
+  shell(s,s.seconds?`<div class="bar tbar timer" title="Время"><i id="tbar" style="width:100%"></i></div>`:"");
+  const first=run.queue.splice(0,SLOTS);
+  const lp=shuffle(first),rp=shuffle(first);
+  lp.forEach((p,k)=>run.L[k]=p.id);rp.forEach((p,k)=>run.R[k]=p.id);
+  $("stage").innerHTML=`<p class="ask">${run.listen?"Tap 🔊 to listen, then find the translation.":"Tap the matching pairs."} <span style="font-weight:600">Клавиши 1–5 и 6–0.</span></p>
+    <div class="board"><div class="col" lang="en">${run.L.map((_,k)=>`<button class="tile" data-side="L" data-slot="${k}" data-key="${LKEYS[k]}"></button>`).join("")}</div>
+    <div class="col">${run.R.map((_,k)=>`<button class="tile" data-side="R" data-slot="${k}" data-key="${RKEYS[k]}"></button>`).join("")}</div></div>`;
+  for(let k=0;k<SLOTS;k++){drawTile("L",k);drawTile("R",k)}
+  $("stage").querySelectorAll(".tile").forEach(b=>b.onclick=()=>tap(b.dataset.side,+b.dataset.slot));
+  updMatchCount();
+  if(s.seconds){
+    const end=Date.now()+s.seconds*1000;
+    timer=setInterval(()=>{const left=end-Date.now();$("tbar").style.width=Math.max(0,left/(s.seconds*1000)*100)+"%";
+      $("cnt").textContent=`${run.done} / ${run.n} · ${Math.max(0,Math.ceil(left/1000))} c`;
+      if(left<=0){clearTimer();run.pairs.forEach(p=>{if(!p.matched)p.err=true});$("fb").innerHTML='<span class="bad">⏰ Time\'s up!</span>';setTimeout(finishMatch,700)}},200);
+  }
+  $("stage").focus({preventScroll:true});
+}
+const pairBy=id=>run.pairs[id];
+function tileEl(side,k){return $("stage").querySelector(`.tile[data-side="${side}"][data-slot="${k}"]`)}
+function drawTile(side,k,anim){
+  const b=tileEl(side,k),id=(side==="L"?run.L:run.R)[k];
+  b.className="tile"+(id===null?" empty":"")+(anim?" in":"");
+  b.disabled=id===null;
+  const key=`<kbd>${side==="L"?LKEYS[k]:RKEYS[k]}</kbd>`;
+  if(id===null){b.innerHTML=key;return}
+  const p=pairBy(id);
+  if(side==="L"&&run.listen&&canSpeak()){b.innerHTML=`${key}<span class="ear">🔊</span>`;b.setAttribute("aria-label","Послушать слово")}
+  else{b.innerHTML=`${key}${esc(side==="L"?p.en:p.ru)}`;b.removeAttribute("aria-label")}
+}
+function refreshListen(){for(let k=0;k<SLOTS;k++)if(run.L[k]!==null&&!tileEl("L",k).classList.contains("ok"))drawTile("L",k)}
+function updMatchCount(){
+  if(!run.s.seconds)$("cnt").textContent=`${run.done} / ${run.n}`;
+  $("sbar").style.width=(run.done/run.n*100)+"%";
+}
+function tap(side,k){
+  if(!run||!run.match||run.finished)return;
+  const arr=side==="L"?run.L:run.R,id=arr[k];
+  if(id===null)return;
+  const el=tileEl(side,k);
+  if(el.classList.contains("ok")||el.classList.contains("bad"))return;
+  if(side==="L")speak(pairBy(id).en);
+  if(!run.sel||run.sel.side===side){
+    if(run.sel){tileEl(run.sel.side,run.sel.k).classList.remove("sel")}
+    if(run.sel&&run.sel.side===side&&run.sel.k===k){run.sel=null;return}
+    run.sel={side,k};el.classList.add("sel");return;
+  }
+  const other=run.sel;run.sel=null;
+  const lk=side==="L"?k:other.k,rk=side==="R"?k:other.k;
+  const lid=run.L[lk],rid=run.R[rk],le=tileEl("L",lk),re=tileEl("R",rk);
+  le.classList.remove("sel");re.classList.remove("sel");
+  if(lid===rid){
+    const p=pairBy(lid);p.matched=true;run.done++;
+    le.classList.add("ok");re.classList.add("ok");
+    if(run.listen)le.innerHTML=`<kbd>${LKEYS[lk]}</kbd>${esc(p.en)}`;
+    $("fb").innerHTML=`<span class="ok">✅ ${PRAISE[Math.floor(Math.random()*PRAISE.length)]}</span> <span lang="en">${esc(p.en)}</span> = ${esc(p.ru)}`;
+    updMatchCount();
+    setTimeout(()=>{
+      le.classList.add("gone");re.classList.add("gone");
+      setTimeout(()=>{
+        if(!run||run.finished)return;
+        run.L[lk]=null;run.R[rk]=null;
+        const nx=run.queue.shift();
+        if(nx){run.L[lk]=nx.id;run.R[rk]=nx.id}
+        drawTile("L",lk,!!nx);drawTile("R",rk,!!nx);
+        if(run.done===run.n)finishMatch();
+      },reduce?0:260);
+    },reduce?150:380);
+  }else{
+    pairBy(lid).err=true;pairBy(rid).err=true;
+    le.classList.add("bad");re.classList.add("bad");
+    $("fb").innerHTML=`<span class="bad">❌ Not a pair.</span> Попробуйте ещё раз.`;
+    setTimeout(()=>{le.classList.remove("bad");re.classList.remove("bad")},450);
+  }
+}
+function finishMatch(){
+  if(run.finished)return;run.finished=true;clearTimer();
+  const wrong=run.pairs.filter(p=>p.err).map(p=>`${p.en} — ${p.ru}`);
+  summary(run.n-wrong.length,run.n,wrong);
+}
+
+/* ---------- задания: слова + грамматика ---------- */
+function startTasks(i){
+  const s=STATIONS[i];
+  run={i,s,items:shuffle(s.items),k:0,correct:0,wrong:[],answered:false};run.n=run.items.length;
+  shell(s);$("nextBtn").onclick=next;renderItem();
+}
+function renderItem(){
+  const it=run.items[run.k];run.answered=false;run.removeLast=null;
+  $("fb").innerHTML="";$("nextBtn").hidden=true;$("nextBtn").textContent=run.k===run.n-1?"Finish 🏁":"Next ➜";
+  $("cnt").textContent=`${run.k+1} / ${run.n}`;$("sbar").style.width=(run.k/run.n*100)+"%";
+  ({choose:renderChoose,type:renderType,build:renderBuild})[it[0]](it);
+  if(it[0]!=="type")$("stage").focus({preventScroll:true});
+}
+function mark(ok,label,html,say){
+  run.answered=true;if(ok)run.correct++;else run.wrong.push(label);
+  $("fb").innerHTML=`<span class="${ok?"ok":"bad"}">${ok?"✅ "+PRAISE[Math.floor(Math.random()*PRAISE.length)]:"❌ Not quite."}</span> ${html}`;
+  speak(say);const nb=$("nextBtn");nb.hidden=false;nb.focus({preventScroll:true});
+}
+function next(){run.k++;if(run.k>=run.n)summary(run.correct,run.n,run.wrong);else renderItem()}
+function renderChoose(it){
+  const[,sent,opts,note]=it,full=sent.replace("___",opts[0]);
+  const arr=shuffle(opts.map((o,k)=>({o,ok:k===0})));
+  $("stage").innerHTML=`<p class="sentence" lang="en">${esc(sent).replace("___",'<span class="gap" id="gap">&nbsp;</span>')}</p>
+    <div class="opts">${arr.map((a,k)=>`<button class="ob" data-k="${k}" data-key="${k+1}"><kbd>${k+1}</kbd><span lang="en">${esc(a.o)}</span></button>`).join("")}</div>`;
+  const btns=[...$("stage").querySelectorAll(".ob")];
+  btns.forEach(b=>b.onclick=()=>{
+    if(run.answered)return;const k=+b.dataset.k;
+    btns.forEach((x,j)=>{x.disabled=true;if(arr[j].ok)x.classList.add("right")});
+    if(!arr[k].ok)b.classList.add("wrong");
+    const g=$("gap");g.textContent=opts[0];g.classList.add("filled");
+    mark(arr[k].ok,full,`<span lang="en">${esc(full)}</span>${note?`<small>${esc(note)}</small>`:""}`,full);
+  });
+}
+function norm(t){return t.toLowerCase().replace(/[’‘`´]/g,"'").replace(/n't\b/g," not").replace(/'ve\b/g," have").replace(/'re\b/g," are").replace(/'m\b/g," am").replace(/[.!?,"]+$/,"").replace(/\s+/g," ").trim()}
+function renderType(it){
+  const m=it[1].match(/\{([^}]+)\}\s*(\([^)]*\))?/),answers=m[1].split("|"),hint=m[2]||"";
+  const before=it[1].slice(0,m.index),after=it[1].slice(m.index+m[0].length);
+  const full=(before+answers[0]+(after&&!/^[\s.,!?]/.test(after)?" ":"")+after).replace(/\s+/g," ").trim();
+  $("stage").innerHTML=`<p class="sentence" lang="en">${esc(before)}<input id="ans" class="tin" size="${Math.max(7,answers[0].length+3)}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Your answer ${esc(hint)}"> <span class="hint">${esc(hint)}</span> ${esc(after)}</p>
+    <p class="ask" lang="en">Type the word in the correct form.</p><div class="row"><button id="check">Check ✔</button></div>`;
+  const inp=$("ans");inp.focus({preventScroll:true});
+  const check=()=>{
+    if(run.answered)return;const v=norm(inp.value);
+    if(!v){$("fb").innerHTML='<span class="bad">Type your answer.</span>';inp.focus();return}
+    const ok=answers.some(a=>norm(a)===v);inp.readOnly=true;inp.classList.add(ok?"right":"wrong");$("check").disabled=true;
+    mark(ok,full,ok?`<span lang="en">${esc(full)}</span>`:`Correct: <b lang="en">${esc(answers[0])}</b><small lang="en">${esc(full)}</small>`,full);
+  };
+  $("check").onclick=check;
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();if(run.answered)next();else check()}});
+}
+function renderBuild(it){
+  const tiles=it[1].split("/").map(x=>x.trim()).filter(Boolean),target=tiles.join(" ");
+  let pool=shuffle(tiles.map((_,k)=>k));if(tiles.length>1)while(pool.every((v,k)=>v===k))pool=shuffle(pool);
+  let placed=[];
+  $("stage").innerHTML=`<p class="ask" lang="en">Put the words in the right order.</p><div class="line" id="line" lang="en" aria-label="Your sentence"></div><div class="pool" id="pool" lang="en"></div>
+    <div class="row"><button id="check">Check ✔</button><button id="clear">Clear</button></div>`;
+  const draw=()=>{
+    $("line").innerHTML=placed.map(k=>`<button class="wt" data-k="${k}">${esc(tiles[k])}</button>`).join("");
+    $("pool").innerHTML=pool.map(k=>`<button class="wt" data-k="${k}">${esc(tiles[k])}</button>`).join("");
+    $("line").querySelectorAll(".wt").forEach(b=>b.onclick=()=>{if(run.answered)return;const k=+b.dataset.k;placed=placed.filter(x=>x!==k);pool.push(k);draw()});
+    $("pool").querySelectorAll(".wt").forEach(b=>b.onclick=()=>{if(run.answered)return;const k=+b.dataset.k;pool=pool.filter(x=>x!==k);placed.push(k);draw();($("pool").querySelector(".wt")||$("check")).focus()});
+  };
+  run.removeLast=()=>{if(placed.length){pool.push(placed.pop());draw()}};draw();
+  $("clear").onclick=()=>{if(run.answered)return;pool=pool.concat(placed);placed=[];draw()};
+  $("check").onclick=()=>{
+    if(run.answered)return;
+    if(placed.length<tiles.length){$("fb").innerHTML=`<span class="bad">Use all the words.</span> Words left: ${pool.length}.`;return}
+    const ok=placed.map(k=>tiles[k]).join(" ")===target;
+    $("stage").querySelectorAll(".wt").forEach(t=>t.disabled=true);$("check").disabled=true;$("clear").disabled=true;
+    $("line").classList.add(ok?"right":"wrong");
+    mark(ok,target,ok?`<span lang="en">${esc(target)}</span>`:`Correct: <span lang="en">${esc(target)}</span>`,target);
+  };
+}
+
+/* ---------- итог станции ---------- */
+function summary(c,n,wrong){
+  const s=run.s,k=starsFor(c,n);
+  progress.st[s.id]={correct:c,total:n,wrong};save();hud();
+  run.summary=true;run.match=false;
+  $("cnt").textContent="🏁";$("sbar").style.width="100%";$("nextBtn").hidden=true;$("fb").innerHTML="";
+  const say=k===3?"Fantastic! You are a word champion!":k===2?"Good job! Keep going!":"Nice try! Look at the words and play again!";
+  const ni=run.i+1<STATIONS.length?run.i+1:null,i=run.i;
+  $("stage").innerHTML=`<div class="sum"><div class="stars">${starStr(k)}</div><div class="big">${c} / ${n}</div><p lang="en"><b>${say}</b></p>
+    ${wrong.length?`<div>Повторите эти слова:</div><ul>${wrong.map(w=>`<li>${esc(w)}</li>`).join("")}</ul>`:"<p>Ни одной ошибки! 🎉</p>"}
+    <div class="row" style="justify-content:center"><button id="toMap">🏕️ Лагерь</button><button id="again">🔁 Ещё раз</button>${ni!==null?`<button class="go" id="nx">${STATIONS[ni].emoji} Следующая станция</button>`:`<button class="go" id="toRes">📋 Получить результат</button>`}</div></div>`;
+  speak(say);
+  $("toMap").onclick=renderMap;$("again").onclick=()=>startStation(i);
+  if(ni!==null)$("nx").onclick=()=>openStation(ni);else $("toRes").onclick=()=>{renderMap();showResult()};
+  $("stage").focus({preventScroll:true});
+}
+
+/* ---------- клавиатура ---------- */
+document.addEventListener("keydown",e=>{
+  const tag=e.target.tagName;
+  if(tag==="INPUT"||tag==="TEXTAREA"||!run)return;
+  if(e.key==="Escape"){renderMap();return}
+  if(run.summary)return;
+  if(e.key==="Enter"){
+    if(tag==="BUTTON"||tag==="SUMMARY"||run.match)return;
+    if(!$("nextBtn").hidden){e.preventDefault();next();return}
+    const c=$("check");if(c&&!run.answered){e.preventDefault();c.click()}return;
+  }
+  if(e.key==="Backspace"&&run.removeLast&&!run.answered){e.preventDefault();run.removeLast();return}
+  if(e.ctrlKey||e.metaKey||e.altKey)return;
+  const b=[...view.querySelectorAll("[data-key]")].find(x=>x.dataset.key===e.key&&!x.disabled);
+  if(b){e.preventDefault();b.click()}
+});
+
+/* ---------- результат и код ---------- */
+function makeCode(name,c,done){
+  const str=[SALT,name.trim().toLowerCase(),c,done].join("|");
+  let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)>>>0}
+  return h.toString(36).toUpperCase().padStart(7,"0").slice(-6);
+}
+function buildReport(){
+  const name=$("studentName").value.trim()||"(имя не указано)",{c,done}=stats();
+  const lines=STATIONS.map(s=>{const r=progress.st[s.id];return `${s.title}: ${r?`${r.correct}/${r.total}`:"не пройдено"}`});
+  const withErr=STATIONS.filter(s=>progress.st[s.id]&&progress.st[s.id].wrong.length);
+  const nErr=withErr.reduce((a,s)=>a+progress.st[s.id].wrong.length,0);
+  $("report").textContent=`Word Camp (A2–B1): слова о детстве\nИмя: ${name}\nВерно: ${c}/${GRAND}\nПройдено станций: ${done}/${STATIONS.length}\n`+lines.join("\n")+
+    (nErr?`\nОшибки (${nErr}):\n`+withErr.map(s=>`${s.title}:\n– ${progress.st[s.id].wrong.join("\n– ")}`).join("\n"):(done?"\nОшибок нет":""))+
+    `\nКод: ${makeCode(name,c,done)}`;
+}
+function showResult(){
+  const{done}=stats();
+  if(done<STATIONS.length&&!confirm(`Пройдено ${done} из ${STATIONS.length} станций. Всё равно получить результат?`))return;
+  $("studentName").value=progress.name||"";
+  $("resTitle").textContent=done===STATIONS.length?"🎉 Все станции пройдены!":`Пройдено станций: ${done} из ${STATIONS.length}`;
+  buildReport();$("copied").textContent="";$("result").classList.add("show");
+  $("result").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});$("studentName").focus({preventScroll:true});
+}
+$("studentName").oninput=()=>{progress.name=$("studentName").value;save();buildReport()};
+$("copyBtn").onclick=async()=>{
+  const t=$("report").textContent,msg=$("copied");
+  try{await navigator.clipboard.writeText(t);msg.textContent="Скопировано ✅"}
+  catch(e){const r=document.createRange();r.selectNodeContents($("report"));const s=getSelection();s.removeAllRanges();s.addRange(r);msg.textContent="Текст выделен, нажмите Ctrl+C"}
+};
+if(location.hash==="#teacher")$("teacher").classList.add("show");
+$("tCheck").onclick=()=>{
+  const v=id=>$(id).value.trim();
+  const ok=makeCode(v("tName"),v("tCorrect").split("/")[0].trim(),v("tDone").split("/")[0].trim())===v("tCode").toUpperCase();
+  $("tResult").innerHTML=ok?'<span class="ok">Код верный, результат не изменён.</span>':'<span class="bad">Код не совпадает. Проверьте, что данные введены точно как в результате.</span>';
+};
+
+renderMap();
+</script>
+</body>
+</html>
